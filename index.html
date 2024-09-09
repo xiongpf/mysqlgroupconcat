@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Function Guide - GROUP_CONCAT and Other Common Functions</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f0f4f8;
+        }
+        .container {
+            max-width: 1200px; /* 增加最大宽度 */
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #2c3e50; 
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 { 
+            color: #2980b9; 
+            margin-top: 30px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        .highlight { 
+            background-color: #fffacd; 
+            padding: 20px; /* 增加内边距 */
+            border-radius: 5px;
+            border-left: 5px solid #f1c40f;
+            margin-bottom: 30px; /* 增加底部外边距 */
+        }
+        pre { 
+            background-color: #ecf0f1; 
+            padding: 15px; 
+            border-radius: 5px; 
+            overflow-x: auto;
+            font-size: 14px; /* 调整代码字体大小 */
+        }
+        .example {
+            background-color: #e8f6f3;
+            padding: 20px; /* 增加内边距 */
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px; /* 增加底部外边距 */
+        }
+        .note {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+        .language-selector {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .language-selector select {
+            padding: 5px;
+            font-size: 16px;
+        }
+        /* 新增：两列布局 */
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+        }
+        .function-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="language-selector">
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="hi">हिन्दी</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+                <option value="ja">日本語</option>
+            </select>
+        </div>
+
+        <h1 id="mainTitle">MySQL Function Guide</h1>
+        
+        <section class="highlight">
+            <h2 id="groupConcatTitle">GROUP_CONCAT Function</h2>
+            <p id="groupConcatDesc">GROUP_CONCAT is a powerful MySQL aggregate function used to concatenate strings from a group into a single string.</p>
+            
+            <h3 id="basicSyntaxTitle">Basic Syntax:</h3>
+            <pre>
+GROUP_CONCAT([DISTINCT] expr [ORDER BY {unsigned_integer | col_name | expr} [ASC | DESC] [,col_name ...]] [SEPARATOR str_val])
+            </pre>
+            
+            <h3 id="parametersTitle">Parameters:</h3>
+            <ul>
+                <li><strong>DISTINCT</strong>: <span id="distinctDesc">Optional, used to remove duplicate values from the result</span></li>
+                <li><strong>expr</strong>: <span id="exprDesc">The expression or column name to be concatenated</span></li>
+                <li><strong>ORDER BY</strong>: <span id="orderByDesc">Optional, used to sort the result</span></li>
+                <li><strong>SEPARATOR</strong>: <span id="separatorDesc">Optional, specifies the separator string, default is comma</span></li>
+            </ul>
+
+            <h3 id="exampleTitle">Example:</h3>
+            <div class="example">
+                <p id="exampleDesc">Suppose we have an employees table with fields: id, name, department</p>
+                <pre>
+SELECT department, GROUP_CONCAT(name ORDER BY name ASC SEPARATOR ', ') AS employees
+FROM employees
+GROUP BY department;
+                </pre>
+                <p id="exampleExplanation">This query will return each department and all its employee names (sorted alphabetically and separated by commas).</p>
+            </div>
+
+            <p class="note" id="groupConcatNote">Note: The result length of GROUP_CONCAT is limited by the system variable group_concat_max_len, which typically defaults to 1024. You can increase this limit by setting this variable.</p>
+        </section>
+
+        <h2 id="otherFunctionsTitle">Other Common MySQL Functions</h2>
+        
+        <div class="function-grid">
+            <div class="function-item">
+                <h3 id="countFunctionTitle">1. COUNT()</h3>
+                <p id="countFunctionDesc">COUNT() function is used to count the number of rows or non-NULL values.</p>
+                <div class="example">
+                    <pre>
+SELECT COUNT(*) FROM table_name;
+SELECT COUNT(DISTINCT column_name) FROM table_name;
+                    </pre>
+                </div>
+            </div>
+
+            <div class="function-item">
+                <h3 id="sumFunctionTitle">2. SUM()</h3>
+                <p id="sumFunctionDesc">SUM() function is used to calculate the sum of a set of values.</p>
+                <div class="example">
+                    <pre>
+SELECT SUM(salary) AS total_salary FROM employees;
+                    </pre>
+                </div>
+            </div>
+
+            <div class="function-item">
+                <h3 id="avgFunctionTitle">3. AVG()</h3>
+                <p id="avgFunctionDesc">AVG() function is used to calculate the average of a set of values.</p>
+                <div class="example">
+                    <pre>
+SELECT AVG(price) AS average_price FROM products;
+                    </pre>
+                </div>
+            </div>
+
+            <div class="function-item">
+                <h3 id="concatFunctionTitle">4. CONCAT()</h3>
+                <p id="concatFunctionDesc">CONCAT() function is used to concatenate two or more strings.</p>
+                <div class="example">
+                    <pre>
+SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employees;
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 可以继续添加更多函数示例 -->
+
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                mainTitle: "MySQL Function Guide",
+                groupConcatTitle: "GROUP_CONCAT Function",
+                groupConcatDesc: "GROUP_CONCAT is a powerful MySQL aggregate function used to concatenate strings from a group into a single string.",
+                basicSyntaxTitle: "Basic Syntax:",
+                parametersTitle: "Parameters:",
+                distinctDesc: "Optional, used to remove duplicate values from the result",
+                exprDesc: "The expression or column name to be concatenated",
+                orderByDesc: "Optional, used to sort the result",
+                separatorDesc: "Optional, specifies the separator string, default is comma",
+                exampleTitle: "Example:",
+                exampleDesc: "Suppose we have an employees table with fields: id, name, department",
+                exampleExplanation: "This query will return each department and all its employee names (sorted alphabetically and separated by commas).",
+                groupConcatNote: "Note: The result length of GROUP_CONCAT is limited by the system variable group_concat_max_len, which typically defaults to 1024. You can increase this limit by setting this variable.",
+                otherFunctionsTitle: "Other Common MySQL Functions",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "COUNT() function is used to count the number of rows or non-NULL values.",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "SUM() function is used to calculate the sum of a set of values.",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "AVG() function is used to calculate the average of a set of values.",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "CONCAT() function is used to concatenate two or more strings."
+            },
+            zh: {
+                mainTitle: "MySQL函数使用指南",
+                groupConcatTitle: "GROUP_CONCAT函数",
+                groupConcatDesc: "GROUP_CONCAT是一个强大的MySQL聚合函数,用于将组中的字符串连接成一个字符串。",
+                basicSyntaxTitle: "基本语法:",
+                parametersTitle: "参数说明:",
+                distinctDesc: "可选,用于删除结果中的重复值",
+                exprDesc: "要连接的表达式或列名",
+                orderByDesc: "可选,用于对结果进行排序",
+                separatorDesc: "可选,指定连接字符串,默认为逗号",
+                exampleTitle: "示例:",
+                exampleDesc: "假设我们有一个employees表,包含以下字段: id, name, department",
+                exampleExplanation: "这个查询会返回每个部门及其所有员工的名字(按字母顺序排列,用逗号分隔)。",
+                groupConcatNote: "注意: GROUP_CONCAT的结果长度受到系统变量group_concat_max_len的限制,默认值通常为1024。可以通过设置这个变量来增加允许的最大长度。",
+                otherFunctionsTitle: "其他常用MySQL函数",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "COUNT()函数用于计算行数或非NULL值的数量。",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "SUM()函数用于计算一组值的总和。",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "AVG()函数用于计算一组值的平均值。",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "CONCAT()函数用于连接两个或多个字符串。"
+            },
+            hi: {
+                mainTitle: "MySQL फ़ंक्शन गाइड",
+                groupConcatTitle: "GROUP_CONCAT फ़ंक्शन",
+                groupConcatDesc: "GROUP_CONCAT एक शक्तिशाली MySQL एग्रीगेट फ़ंक्शन है जो एक समूह से स्ट्रिंग्स को एक सिंगल स्ट्रिंग में जोड़ने के लिए उपयोग किया जाता है।",
+                basicSyntaxTitle: "मूल सिंटैक्स:",
+                parametersTitle: "पैरामीटर:",
+                distinctDesc: "वैकल्पिक, परिणाम से डुप्लिकेट मानों को हटाने के लिए उपयोग किया जाता है",
+                exprDesc: "जोड़ने के लिए अभिव्यक्ति या कॉलम नाम",
+                orderByDesc: "वैकल्पिक, परिणाम को सॉर्ट करने के लिए उपयोग किया जाता है",
+                separatorDesc: "वैकल्पिक, सेपरेटर स्ट्रिंग निर्दिष्ट करता है, डिफ़ॉल्ट कॉमा है",
+                exampleTitle: "उदाहरण:",
+                exampleDesc: "चुनकें कि हमारे पास एक कर्मचारियों की तालिका है जिसमें फील्ड्स हैं: आईडी, नाम, विभाग",
+                exampleExplanation: "इस क्वेरी को प्रत्येक विभाग और उसके सभी कर्मचारी के नाम (वर्णानुक्रमिक क्रम में और कॉमा से अलग किए गए) लौटाएगा।",
+                groupConcatNote: "नोट: GROUP_CONCAT का परिणाम लंबाई सिस्टम वेरिएबल group_concat_max_len द्वारा सीमित है, जो आमतौर पर 1024 के डिफ़ॉल्ट पर सेट होता है। आप इस सीमा को इस वेरिएबल को सेट करके बढ़ा सकते हैं।",
+                otherFunctionsTitle: "अन्य सामान्य MySQL फ़ंक्शंस",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "COUNT() फ़ंक्शन पंक्तियों या गैर-NULL मानों की संख्या गिनने के लिए उपयोग किया जाता है।",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "SUM() फ़ंक्शन मानों के एक सेट का योग गणना करने के लिए उपयोग किया जाता है।",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "AVG() फ़ंक्शन मानों के एक सेट का औसत गणना करने के लिए उपयोग किया जाता है।",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "CONCAT() फ़ंक्शन दो या अधिक स्ट्रिंग्स को जोड़ने के लिए उपयोग किया जाता है।"
+            },
+            de: {
+                mainTitle: "MySQL-Funktionshandbuch",
+                groupConcatTitle: "GROUP_CONCAT-Funktion",
+                groupConcatDesc: "GROUP_CONCAT ist eine leistungsstarke MySQL-Aggregatfunktion, die Zeichenfolgen aus einer Gruppe in eine einzelne Zeichenfolge zusammenfügt.",
+                basicSyntaxTitle: "Grundsyntax:",
+                parametersTitle: "Parameter:",
+                distinctDesc: "Optional, wird verwendet, um doppelte Werte aus dem Ergebnis zu entfernen",
+                exprDesc: "Der Ausdruck oder Spaltenname, der zusammengefügt werden soll",
+                orderByDesc: "Optional, wird verwendet, um das Ergebnis zu sortieren",
+                separatorDesc: "Optional, gibt den Trennzeichenfolge an, Standard ist Komma",
+                exampleTitle: "Beispiel:",
+                exampleDesc: "Nehmen wir an, wir haben eine Mitarbeitertabelle mit den Feldern: id, name, department",
+                exampleExplanation: "Diese Abfrage gibt jede Abteilung und alle ihre Mitarbeiternamen (alphabetisch sortiert und durch Kommas getrennt) zurück.",
+                groupConcatNote: "Hinweis: Die Länge des Ergebnisses von GROUP_CONCAT ist durch die Systemvariable group_concat_max_len begrenzt, die standardmäßig auf 1024 eingestellt ist. Sie können diesen Grenzwert durch Setzen dieser Variablen erhöhen.",
+                otherFunctionsTitle: "Andere gängige MySQL-Funktionen",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "Die COUNT()-Funktion wird verwendet, um die Anzahl der Zeilen oder Nicht-NULL-Werte zu zählen.",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "Die SUM()-Funktion wird verwendet, um die Summe einer Menge von Werten zu berechnen.",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "Die AVG()-Funktion wird verwendet, um den Durchschnitt einer Menge von Werten zu berechnen.",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "Die CONCAT()-Funktion wird verwendet, um zwei oder mehr Zeichenketten zu verknüpfen."
+            },
+            fr: {
+                mainTitle: "Guide des fonctions MySQL",
+                groupConcatTitle: "Fonction GROUP_CONCAT",
+                groupConcatDesc: "GROUP_CONCAT est une fonction d'agrégation MySQL puissante utilisée pour concaténer des chaînes de caractères d'un groupe en une seule chaîne.",
+                basicSyntaxTitle: "Syntaxe de base :",
+                parametersTitle: "Paramètres :",
+                distinctDesc: "Optionnel, utilisé pour supprimer les valeurs en double du résultat",
+                exprDesc: "L'expression ou le nom de colonne à concaténer",
+                orderByDesc: "Optionnel, utilisé pour trier le résultat",
+                separatorDesc: "Optionnel, spécifie la chaîne de séparation, par défaut une virgule",
+                exampleTitle: "Exemple :",
+                exampleDesc: "Supposons que nous ayons une table employees avec les champs : id, name, department",
+                exampleExplanation: "Cette requête renverra chaque département et tous ses noms d'employés (triés par ordre alphabétique et séparés par des virgules).",
+                groupConcatNote: "Note : La longueur du résultat de GROUP_CONCAT est limitée par la variable système group_concat_max_len, qui est généralement définie par défaut sur 1024. Vous pouvez augmenter cette limite en définissant cette variable.",
+                otherFunctionsTitle: "Autres fonctions MySQL courantes",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "La fonction COUNT() est utilisée pour compter le nombre de lignes ou de valeurs non NULL.",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "La fonction SUM() est utilisée pour calculer la somme d'un ensemble de valeurs.",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "La fonction AVG() est utilisée pour calculer la moyenne d'un ensemble de valeurs.",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "La fonction CONCAT() est utilisée pour concaténer deux chaînes de caractères ou plus."
+            },
+            ja: {
+                mainTitle: "MySQL関数ガイド",
+                groupConcatTitle: "GROUP_CONCAT関数",
+                groupConcatDesc: "GROUP_CONCATは、グループ内の文字列を1つの文字列に連結するために使用される強力なMySQL集計関数です。",
+                basicSyntaxTitle: "基本構文:",
+                parametersTitle: "パラメータ:",
+                distinctDesc: "オプション、結果から重複値を削除するために使用されます",
+                exprDesc: "連結する式または列名",
+                orderByDesc: "オプション、結果をソートするために使用されます",
+                separatorDesc: "オプション、セパレータ文字列を指定します、デフォルトはカンマです",
+                exampleTitle: "例:",
+                exampleDesc: "仮に、employeesテーブルがあり、フィールドにid、name、departmentがあるとします",
+                exampleExplanation: "このクエリは、各部門とそのすべての従業員の名前（アルファベット順に並べ替えられ、カンマで区切られています）を返します。",
+                groupConcatNote: "注意: GROUP_CONCATの結果の長さは、システム変数group_concat_max_lenによって制限されており、通常は1024に設定されています。この変数を設定することでこの制限を増やすことができます。",
+                otherFunctionsTitle: "その他の一般的なMySQL関数",
+                countFunctionTitle: "1. COUNT()",
+                countFunctionDesc: "COUNT()関数は、行数または非NULL値の数をカウントするために使用されます。",
+                sumFunctionTitle: "2. SUM()",
+                sumFunctionDesc: "SUM()関数は、一連の値の合計を計算するために使用されます。",
+                avgFunctionTitle: "3. AVG()",
+                avgFunctionDesc: "AVG()関数は、一連の値の平均を計算するために使用されます。",
+                concatFunctionTitle: "4. CONCAT()",
+                concatFunctionDesc: "CONCAT()関数は、2つ以上の文字列を連結するために使用されます。"
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const translation = translations[lang];
+            
+            for (const [key, value] of Object.entries(translation)) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+
+            document.documentElement.lang = lang;
+        }
+    </script>
+</body>
+</html>
